@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz Result</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            font-family: 'Segoe UI', sans-serif;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .result-container {
+            max-width: 700px;
+            margin: 50px auto;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .score {
+            text-align: center;
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+        }
+        .review-block {
+            background-color: rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        .correct {
+            border-left: 5px solid #00e676;
+        }
+        .wrong {
+            border-left: 5px solid #ff1744;
+        }
+        .review-block p {
+            margin: 5px 0;
+        }
+        .back-btn {
+            display: block;
+            width: 200px;
+            margin: 30px auto 0;
+            padding: 12px;
+            font-size: 1rem;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+        .back-btn:hover {
+            background: #43a047;
+        }
+    </style>
+</head>
+<body>
+    <div class="result-container">
+        <h1>🎉 Quiz Completed!</h1>
+        <p class="score">Your Score: {{ score }} / {{ total }}</p>
+
+        {% for result in results %}
+        <div class="review-block {% if result.is_correct %}correct{% else %}wrong{% endif %}">
+            <p><strong>Q{{ loop.index }}:</strong> {{ result.question['question'] }}</p>
+            <p><strong>Your Answer:</strong>
+                {{ result.question['option' ~ result.user_answer|string] if result.user_answer else 'Not Answered' }}
+            </p>
+            <p><strong>Correct Answer:</strong> {{ result.question['option' ~ result.question['answer']|string] }}</p>
+        </div>
+        {% endfor %}
+
+        <a href="/" class="back-btn">🏠 Back to Home</a>
+    </div>
+</body>
+</html>

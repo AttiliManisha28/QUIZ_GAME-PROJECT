@@ -1,0 +1,100 @@
+<!-- templates/quiz.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body.quiz-body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        .quiz-container {
+            max-width: 100%;
+            padding: 30px;
+        }
+
+        .quiz-title {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 30px;
+        }
+
+        .quiz-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .question-block {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+        }
+
+        .question-text {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .option-label {
+            font-size: 14px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .submit-btn {
+            margin-top: 30px;
+            display: block;
+            background: #fff;
+            color: #0072ff;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .submit-btn:hover {
+            background: #e0e0e0;
+        }
+    </style>
+</head>
+<body class="quiz-body">
+    <div class="quiz-container">
+        <h1 class="quiz-title">Answer the Questions</h1>
+        <form action="/submit" method="POST">
+            <div class="quiz-grid">
+                {% for question in questions %}
+                    {% set question_index = loop.index0 %}
+                    <div class="question-block">
+                        <p class="question-text">{{ loop.index }}. {{ question[1] }}</p>
+                        {% for opt_index in range(2, 6) %}
+                            <label class="option-label">
+                                <input 
+                                    type="radio" 
+                                    name="q{{ question_index }}" 
+                                    value="{{ opt_index - 1 }}"
+                                    {% if loop.index0 == 0 %}required{% endif %}>
+                                {{ question[opt_index] }}
+                            </label>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="submit" class="submit-btn">Submit Quiz</button>
+        </form>
+    </div>
+</body>
+</html>
